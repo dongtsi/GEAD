@@ -1,0 +1,22 @@
+rt_params:
+  min_impurity_decrease: 1.0e-6
+  min_samples_leaf: 10
+  random_state: 42
+  min_impurity: null
+  dt_lc_pctg: 0.99
+  nn_lc_pctg: 0.9
+
+lc_params:
+  dtlc_correct: true
+  subtree_type: dec
+
+aug_params:
+  aug_step: 10
+  aug_pace: 10.0
+  aug_upperbound: 1.2
+  aug_lowerbound: 0.95
+  aug_dim: 2
+
+aug_settings:
+  n_total: null
+  random_pace: false
