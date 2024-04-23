@@ -82,18 +82,18 @@ For users who prefer to manage their Python environments with `conda`, or need t
 ## Demo
 We provide **[a step-by-step demo](demo/demo.ipynb)** of explaining an autoencoder-based anomaly detection model with GEAD, which is also the result in Section 4.3.1 of our paper.
 
-## Experiment Results
+## Experiment Results (Avaiable on Zenodo)
 
 The output of the experiments will validate the following claims:
-- (Quality of GEAD) **Figure 3 on page 7** is reproduced in **[experiment/Fidelity_Evaluation.ipynb](experiment/Fidelity_Evaluation.ipynb)** and the results are shown in:
+- (Quality of GEAD) **Figure 3 on page 7** is reproduced in **[experiment/Fidelity_Evaluation.ipynb](.)** and the results are shown in:
     - `experiment/results/figure3_part1(Positive Consistency).png`
     - `experiment/results/figure3_part2(Negative Credibility).png`
-- (Quality of GEAD) **Table 1 on page 7** is reproduced in **[experiment/Fidelity_Evaluation.ipynb](experiment/Fidelity_Evaluation.ipynb)** and the results are shown in:
+- (Quality of GEAD) **Table 1 on page 7** is reproduced in **[experiment/Fidelity_Evaluation.ipynb](.)** and the results are shown in:
     - `experiment/results/Table1_part1(CICIDS2017).csv`
     - `experiment/results/Table1_part2(Kitsune).csv`
     - `experiment/results/Table1_part3(Kyoto2006)`
     - `experiment/results/Table1_part4(HDFS).csv`
-- (Usage of GEAD) **The statement of the inverse relationship between AUC and the number of rules** (see Insight 5 on page 11 and section 4.3.2) is verified in **[experiment/Usage_2.ipynb](experiment/Usage_2.ipynb)** and the reproduced cases of Figure 6 on page 9 are shown in:
+- (Usage of GEAD) **The statement of the inverse relationship between AUC and the number of rules** (see Insight 5 on page 11 and section 4.3.2) is verified in **[experiment/Usage_2.ipynb](.)** and the reproduced cases of Figure 6 on page 9 are shown in:
     - `experiment/results/figure6_case2_part1(loss-auc).png`
     - `experiment/results/figure6_case2_part2(rule-auc).png`
 
