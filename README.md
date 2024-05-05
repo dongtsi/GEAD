@@ -6,6 +6,13 @@
 ![](https://img.shields.io/badge/language-python-blue.svg)
 ![](https://img.shields.io/badge/framework-pytorch-red.svg)
 
+> :warning: **Notice for AEC**
+> ```diff
+> - The files in this Github repository are incomplete (due to restrictions on large files);
+> - Please download the complete files from Zenodo
+> ```
+
+
 ## Introduction
 This artifact is the implementation and experiment results of GEAD proposed in CCS'24.
 In short, GEAD is a method for extracting rules in deep learning-based anomaly detection models. As shown in the figure below, it contains several core steps:
@@ -40,43 +47,32 @@ The following is a brief introduction to the directory structure of this artifac
 
 
 ## Environment Setup
-> This implementation has been successfully tested in **Ubuntu 16.04** server with **Python 3.7**.
+> This implementation has been successfully tested in **Ubuntu 16.04** server with **Python 3.7.16**.
 To ensure compatibility, this artifact (pytorch-based parts) can be fully run with **CPU** (GPU/CUDA is not required).
 
-First, the experiments or demos in this artifact mainly use [jupyter notebook](https://jupyter.org/). So make sure you can view and execute the notebook (.ipynb) files. 
-The following command can be easily used for installing the environment of jupyter notebook:
-```
-pip install notebook
-```
-How to use jupyter notebook can be found on the [official website](https://docs.jupyter.org/en/latest/). In short, select the right kernel (running environment) and then execute all cells (except markdown cells) in sequence. All cells in this artifact have been pre-executed with output shown. If all goes well, you should get consistent output in your environment.
+To ensure the proper functioning of this artifact, please follow the commands below:
 
-To ensure the proper functioning of this artifact, we outline two methods for setting up the required environment:
-
-
-### Method 1: Using `requirements.txt`
-The `requirements.txt` file contains a list of Python packages and their respective versions that are necessary for the artifact to run. To build the environment using this file, follow these steps (we highly recommand use python 3.7 as we do ):
-1. Ensure that you have Python and `pip`, the Python package installer, installed on your system.
-2. Open a terminal or command prompt.
-3. Navigate to the directory containing the `requirements.txt` file.
-4. Run the following command to install all the required packages:
-   ```bash
-   pip install -r setup/requirements.txt
-   ```
-   This command tells `pip` to install all the packages listed in the `requirements.txt` file.
-
-### Method 2: Using `conda.yml`
-For users who prefer to manage their Python environments with `conda`, or need to work with packages that are not available through `pip`, we provide a `conda.yml` file. This file contains a list of conda packages and their versions needed for the artifact. To build the environment using `conda`, follow these steps:
 1. Ensure that you have `conda` installed on your system. If you do not have `conda`, you can install it as part of the Anaconda distribution or Miniconda.
 2. Open a terminal or command prompt.
-3. Create a new conda environment with the name of your choice (e.g., `GEAD`) and specify the `conda.yml` file to configure it:
+3. Create a new conda environment with the name of your choice (e.g., `GEAD`) and specify the version of python to configure it:
    ```bash
-   conda env create -f setup/conda.yml --name GEAD
+   conda create -n GEAD python=3.7.16
    ```
 4. Once the environment is created, activate it by running:
    ```bash
    conda activate GEAD
    ```
    This will switch your command line environment to use the newly created conda environment with all the necessary packages.
+5. Run the following command to install all the required packages:
+   ```bash
+   pip install -r setup/requirements.txt
+   ```
+   This command tells `pip` to install all the packages listed in the `requirements.txt` file.
+
+Below, the experiments or demos in this artifact mainly use [jupyter notebook](https://jupyter.org/). So make sure you can view and execute the notebook (.ipynb) files. 
+How to use jupyter notebook can be found on the [official website](https://docs.jupyter.org/en/latest/). 
+In short, **select the right kernel (namely, the above `GEAD`) and then execute all cells (except markdown cells) in sequence**. All cells in this artifact have been pre-executed with output shown. If all goes well, you should get consistent output in your environment.
+
 
 
 ## Demo
