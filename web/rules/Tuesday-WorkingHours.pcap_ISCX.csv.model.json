@@ -16,27 +16,6 @@
     "conditions": [
       "Fwd IAT Total <= 0.00",
       " Fwd Packet Length Std <= 0.01",
-      " Init_Win_bytes_backward <= 0.00",
-      "Init_Win_bytes_forward <= 0.47",
-      " Flow Packets/s > 0.65"
-    ],
-    "value": 0.19489979073405267,
-    "samples": 80
-  },
-  {
-    "conditions": [
-      "Fwd IAT Total <= 0.00",
-      " Fwd Packet Length Std <= 0.01",
-      " Init_Win_bytes_backward <= 0.00",
-      "Init_Win_bytes_forward > 0.47"
-    ],
-    "value": 0.20271340323777137,
-    "samples": 158
-  },
-  {
-    "conditions": [
-      "Fwd IAT Total <= 0.00",
-      " Fwd Packet Length Std <= 0.01",
       " Init_Win_bytes_backward > 0.00",
       "Total Length of Fwd Packets <= 0.00",
       " URG Flag Count <= 0.50",

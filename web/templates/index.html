@@ -335,17 +335,6 @@
                     tbody.appendChild(tr);
                 });
 
-                // 添加表格点击事件委托
-                document.getElementById('ruleTableBody').addEventListener('click', (e) => {
-                    const target = e.target;
-                    if (target.classList.contains('edit-rule')) {
-                        const index = parseInt(target.dataset.id);
-                        editRule(index);
-                    } else if (target.classList.contains('delete-rule')) {
-                        const index = parseInt(target.dataset.id);
-                        deleteRule(index);
-                    }
-                });
 
                 function editRule(index) {
                     const newCondition = prompt('请输入新的规则条件（多个条件用逗号分隔）:', currentRules[index].conditions.join(','));
@@ -380,8 +369,45 @@
             setTimeout(() => alert.style.display = 'none', 3000);
         }
     
-        // 规则编辑事件处理
-        document.addEventListener('click', async (e) => {
+        // 规则表格事件委托（初始化时绑定）
+        document.getElementById('ruleTableBody').addEventListener('click', async (e) => {
+            const target = e.target;
+            
+            if(target.classList.contains('edit-rule')) {
+                const index = parseInt(target.dataset.id);
+                const newCondition = prompt('请输入新的规则条件', currentRules[index].conditions.join(' 且 '));
+                if(newCondition) {
+                    await fetch('/api/update_rule', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            model_path: modelPath,
+                            rule_index: index,
+                            new_condition: newCondition.split(/且|and/).map(s => s.trim())
+                        })
+                    });
+                    loadRuleTable();
+                }
+            }
+            
+            if(target.classList.contains('delete-rule')) {
+                if(confirm('确定要删除这条规则吗？')) {
+                    const index = parseInt(target.dataset.id);
+                    await fetch('/api/delete_rule', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            model_path: modelPath,
+                            rule_index: index
+                        })
+                    });
+                    loadRuleTable();
+                }
+            }
+        });
+
+        // 初始化其他事件处理
+
             if(e.target.classList.contains('edit-rule')) {
                 const ruleIndex = e.target.dataset.id;
                 const newCondition = prompt('请输入新的规则条件', currentRules[ruleIndex].conditions.join(' 且 '));
@@ -408,6 +434,43 @@
                         body: JSON.stringify({
                             model_path: modelPath,
                             rule_index: ruleIndex
+                        })
+                    });
+                    loadRuleTable();
+                }
+            }
+        });
+
+        // 绑定表格事件委托
+        document.getElementById('ruleTableBody').addEventListener('click', async (e) => {
+            const target = e.target;
+            
+            if(target.classList.contains('edit-rule')) {
+                const index = parseInt(target.dataset.id);
+                const newCondition = prompt('请输入新的规则条件', currentRules[index].conditions.join(' 且 '));
+                if(newCondition) {
+                    await fetch('/api/update_rule', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            model_path: modelPath,
+                            rule_index: index,
+                            new_condition: newCondition.split(/且|and/).map(s => s.trim())
+                        })
+                    });
+                    loadRuleTable();
+                }
+            }
+            
+            if(target.classList.contains('delete-rule')) {
+                if(confirm('确定要删除这条规则吗？')) {
+                    const index = parseInt(target.dataset.id);
+                    await fetch('/api/delete_rule', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            model_path: modelPath,
+                            rule_index: index
                         })
                     });
                     loadRuleTable();
