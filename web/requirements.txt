@@ -1,0 +1,10 @@
+flask==2.3.3
+flask-cors==4.0.0
+pandas==1.1.5
+numpy==1.21.6
+torch==1.13.1
+scikit_learn==1.0.2
+matplotlib==3.5.3
+graphviz==0.20.1
+PyYAML==5.4.1
+tqdm==4.66.1

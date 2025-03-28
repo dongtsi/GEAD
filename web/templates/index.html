@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEAD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container { max-width: 800px; margin-top: 2rem; }
+        .progress { margin: 1rem 0; }
+        #ruleViewer { width: 100%; max-height: 600px; margin-top: 1rem; }
+        .alert { display: none; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-4">
+            <img src="/api/logo" alt="GEAD Logo" style="width: 80%; max-width: 660px; margin-bottom: 1rem;">
+            <h1>网安异常检测模型的规则提取与优化系统</h1>
+        </div>
+        
+        <!-- 数据上传部分 -->
+        <div class="card mb-4">
+            <div class="card-header">第1步：网安异常检测模型训练</div>
+            <div class="card-body">
+                <div class="btn-group w-100 mb-3" role="group">
+                    <input type="radio" class="btn-check" name="modelSource" id="trainNew" value="train" checked>
+                    <label class="btn btn-outline-primary" for="trainNew">训练新模型</label>
+                    
+                    <input type="radio" class="btn-check" name="modelSource" id="useExisting" value="upload">
+                    <label class="btn btn-outline-primary" for="useExisting">使用已有模型</label>
+                </div>
+                
+                <form id="uploadForm">
+                    <div id="trainNewSection">
+                        <div class="mb-3">
+                            <label for="dataFile" class="form-label">选择数据文件 (.csv)</label>
+                            <input type="file" class="form-control" id="dataFile" accept=".csv,.csv.gz">
+                        </div>
+                    </div>
+                    
+                    <div id="useExistingSection" style="display: none;">
+                        <div class="mb-3">
+                            <label for="modelFile" class="form-label">选择模型文件 (.model)</label>
+                            <input type="file" class="form-control" id="modelFile" accept=".model">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="actionBtn">开始训练</button>
+                </form>
+                <div class="progress" style="display: none;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模型训练结果和规则提取 -->
+        <div class="card mb-4" id="modelCard" style="display: none;">
+            <div class="card-header">第2步：网安异常模型规则提取</div>
+            <div class="card-body">
+                <div id="trainResultSection">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>ROC AUC:</strong> <span id="rocAuc"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>最佳阈值:</strong> <span id="threshold"></span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="ruleExtractionSection">
+                    <div class="mb-3" id="dataFileSection" style="display: none;">
+                        <label for="extractDataFile" class="form-label">选择训练数据文件 (.csv)</label>
+                        <input type="file" class="form-control" id="extractDataFile" accept=".csv,.csv.gz">
+                    </div>
+                    <button class="btn btn-success" id="extractBtn">提取规则</button>
+                </div>
+                
+                <div id="ruleImageContainer" style="margin-top: 20px; display: none;">
+                    <div class="spinner-border text-primary" role="status" id="ruleLoadingSpinner" style="display: none;">
+                        <span class="visually-hidden">加载中...</span>
+                    </div>
+                    <img id="ruleViewer" alt="规则树可视化" style="display: none;" onload="handleImageLoad()" onerror="handleImageError()" />
+                    <div class="alert alert-danger" id="ruleLoadError" style="display: none;">图片加载失败</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 规则优化部分 -->
+        <div class="card mb-4" id="optimizeCard" style="display: none;">
+            <div class="card-header">第3步：网安异常检测规则优化</div>
+            <div class="card-body">
+                <div class="btn-group w-100 mb-3" role="group">
+                    <input type="radio" class="btn-check" name="optimizeType" id="manualOptimize" value="manual" checked>
+                    <label class="btn btn-outline-primary" for="manualOptimize">人工反馈</label>
+                    
+                    <input type="radio" class="btn-check" name="optimizeType" id="aiOptimize" value="ai">
+                    <label class="btn btn-outline-primary" for="aiOptimize">AI自动检测</label>
+                </div>
+                
+                <div id="rulesList" class="mb-3">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:60%">规则条件</th>
+                                <th>异常值</th>
+                                <th>样本数</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ruleTableBody">
+                            <!-- 规则行模板 -->
+                            <tr style="display:none;" id="ruleTemplate">
+                                <td><span class="rule-conditions"></span></td>
+                                <td><span class="rule-value"></span></td>
+                                <td><span class="rule-samples"></span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary edit-rule">编辑</button>
+                                    <button class="btn btn-sm btn-outline-danger delete-rule">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary" id="optimizeBtn">优化规则</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提示信息 -->
+        <div class="alert alert-success" id="successAlert"></div>
+        <div class="alert alert-danger" id="errorAlert"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let modelPath = '';
+
+        // 加载规则表格
+        function loadRuleTable() {
+            fetch('/api/get_rules', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({model_path: modelPath})
+            })
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('ruleTableBody');
+                tbody.innerHTML = '';
+                
+                currentRules = data.rules;
+data.rules.forEach((rule, index) => {
+                    const clone = document.getElementById('ruleTemplate').cloneNode(true);
+                    clone.id = '';
+                    clone.style.display = '';
+                    
+                    clone.querySelector('.rule-conditions').textContent = 
+                        Array.isArray(rule.conditions) ? rule.conditions.join(' 且 ') : rule.conditions;
+                    clone.querySelector('.rule-value').textContent = rule.value.toFixed(2);
+                    clone.querySelector('.rule-samples').textContent = rule.samples;
+                    
+                    // 编辑按钮点击事件
+                    clone.querySelector('.edit-rule').addEventListener('click', (e) => {
+    e.stopPropagation();
+                        const newCondition = prompt('请输入新的规则条件', Array.isArray(rule.conditions) ? rule.conditions.join(' 且 ') : rule.conditions);
+                        if(newCondition) {
+                            // 这里添加更新规则的后端调用
+                        }
+                    });
+                    
+                    tbody.appendChild(clone);
+                });
+            });
+        }
+        let currentRules = [];
+        
+        // 图片加载成功处理
+        function handleImageLoad() {
+            document.getElementById('ruleLoadingSpinner').style.display = 'none';
+            document.getElementById('ruleViewer').style.display = 'block';
+            document.getElementById('optimizeCard').style.display = 'block'; // 新增这行显示第三步
+                    loadRuleTable(); // 加载规则表格
+        }
+        
+        // 图片加载失败处理
+        function handleImageError() {
+            document.getElementById('ruleLoadingSpinner').style.display = 'none';
+            document.getElementById('ruleLoadError').style.display = 'block';
+        }
+    
+        // 切换模型获取方式
+        document.querySelectorAll('input[name="modelSource"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const isTrain = e.target.value === 'train';
+                document.getElementById('trainNewSection').style.display = isTrain ? 'block' : 'none';
+                document.getElementById('useExistingSection').style.display = isTrain ? 'none' : 'block';
+                document.getElementById('actionBtn').textContent = isTrain ? '开始训练' : '上传模型';
+                document.getElementById('dataFileSection').style.display = isTrain ? 'none' : 'block';
+                
+                // 清除文件选择
+                document.getElementById('dataFile').value = '';
+                document.getElementById('modelFile').value = '';
+                document.getElementById('extractDataFile').value = '';
+            });
+        });
+    
+        // 表单提交处理
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const isTrain = document.getElementById('trainNew').checked;
+            const fileInput = isTrain ? document.getElementById('dataFile') : document.getElementById('modelFile');
+            const file = fileInput.files[0];
+            if (!file) {
+                showError('请选择文件');
+                return;
+            }
+    
+            // 显示进度条
+            document.querySelector('.progress').style.display = 'block';
+            document.getElementById('actionBtn').disabled = true;
+    
+            const formData = new FormData();
+            formData.append(isTrain ? 'data_file' : 'model_file', file);
+    
+            try {
+                const response = await fetch(isTrain ? '/api/train' : '/api/upload_model', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+    
+                if (result.success) {
+                    modelPath = result.model_path;
+                    if (isTrain) {
+                        document.getElementById('rocAuc').textContent = result.roc_auc.toFixed(4);
+                        document.getElementById('threshold').textContent = result.threshold.toFixed(4);
+                    }
+                    document.getElementById('modelCard').style.display = 'block';
+                    showSuccess(isTrain ? '模型训练完成！' : '模型上传成功！');
+                } else {
+                    showError(result.error || (isTrain ? '训练失败' : '上传失败'));
+                }
+            } catch (error) {
+                showError('请求失败：' + error.message);
+            } finally {
+                document.querySelector('.progress').style.display = 'none';
+                document.getElementById('actionBtn').disabled = false;
+            }
+        };
+
+        // 显示/隐藏数据文件上传控件
+        document.querySelectorAll('input[name="modelSource"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const isTrain = e.target.value === 'train';
+                document.getElementById('dataFileSection').style.display = isTrain ? 'none' : 'block';
+            });
+        });
+
+        // 规则提取完成后的处理
+        async function handleRuleExtraction(imagePath) {
+            document.getElementById('optimizeCard').style.display = 'block';
+            try {
+                const response = await fetch(`/api/rules?model_path=${encodeURIComponent(modelPath)}`);
+                const result = await response.json();
+                if (result.success) {
+                    currentRules = result.rules;
+                    displayRules(currentRules);
+                } else {
+                    showError('获取规则失败：' + result.error);
+                }
+            } catch (error) {
+                showError('获取规则失败：' + error.message);
+            }
+        }
+
+        // 显示规则列表
+        function displayRules(rules) {
+            const tbody = document.getElementById('ruleTableBody');
+            tbody.innerHTML = '';
+        
+            rules.forEach((rule, index) => {
+                const clone = document.getElementById('ruleTemplate').cloneNode(true);
+                clone.style.display = 'table-row';
+clone.removeAttribute('id');
+clone.removeAttribute('style');
+                
+                clone.querySelector('.rule-conditions').textContent = Array.isArray(rule.conditions) ? rule.conditions.join(' 且 ') : rule.conditions;
+                clone.querySelector('.rule-value').textContent = rule.value.toFixed(4);
+                clone.querySelector('.rule-samples').textContent = rule.samples;
+                
+                clone.querySelector('.edit-rule').onclick = () => editRule(index);
+                clone.querySelector('.delete-rule').onclick = () => deleteRule(index);
+                
+                tbody.appendChild(clone);
+            });
+        }
+
+        // 编辑规则
+        function editRule(index) {
+            const rule = currentRules[index];
+            const newRule = prompt('编辑规则', rule);
+            if (newRule !== null) {
+                currentRules[index] = newRule;
+                displayRules(currentRules);
+            }
+        }
+
+        // 删除规则
+        function deleteRule(index) {
+            if (confirm('确定要删除这条规则吗？')) {
+                currentRules.splice(index, 1);
+                displayRules(currentRules);
+            }
+        }
+
+        // 规则优化
+        document.getElementById('optimizeBtn').onclick = async () => {
+            const optimizeType = document.querySelector('input[name="optimizeType"]:checked').value;
+            try {
+                const response = await fetch('/api/optimize_rules', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        rules: currentRules,
+                        type: optimizeType
+                    })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    if (optimizeType === 'ai' && result.suggestions) {
+                        showSuccess('AI优化建议：\n' + result.suggestions.join('\n'));
+                        if (result.optimized_rules) {
+                            currentRules = result.optimized_rules;
+                            displayRules(currentRules);
+                        }
+                    } else {
+                        showSuccess(result.message || '规则已更新');
+                    }
+                } else {
+                    showError(result.error || '优化失败');
+                }
+            } catch (error) {
+                showError('优化请求失败：' + error.message);
+            }
+        };
+
+        
+        // 初始化时设置数据文件上传控件的显示状态
+        document.getElementById('dataFileSection').style.display = document.getElementById('trainNew').checked ? 'none' : 'block';
+
+        // 规则提取处理
+        document.getElementById('extractBtn').onclick = async () => {
+            if (!modelPath) return;
+
+            const isTrain = document.getElementById('trainNew').checked;
+            let dataFile;
+            
+            if (isTrain) {
+                dataFile = document.getElementById('dataFile').files[0];
+            } else {
+                dataFile = document.getElementById('extractDataFile').files[0];
+            }
+            
+            if (!dataFile) {
+                showError('请选择训练数据文件');
+                return;
+            }
+
+            document.getElementById('extractBtn').disabled = true;
+            document.querySelector('.progress').style.display = 'block';
+            document.getElementById('ruleImageContainer').style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('model_path', modelPath);
+            formData.append('data_file', dataFile);
+
+            try {
+                const response = await fetch('/api/extract_rules', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    const ruleViewer = document.getElementById('ruleViewer');
+                    const loadingSpinner = document.getElementById('ruleLoadingSpinner');
+                    const loadError = document.getElementById('ruleLoadError');
+                    
+                    // 重置显示状态
+                    ruleViewer.style.display = 'none';
+                    loadError.style.display = 'none';
+                    loadingSpinner.style.display = 'block';
+                    
+                    // 设置图片源
+                    ruleViewer.src = `/api/view_rules/${modelPath.split('/').pop()}.png`;
+                    document.getElementById('ruleImageContainer').style.display = 'block';
+                    showSuccess('规则提取完成！');
+                    loadRawJson(); // 加载原始JSON数据
+                } else {
+                    showError(result.error || '规则提取失败');
+                }
+            } catch (error) {
+                showError('请求失败：' + error.message);
+            } finally {
+                document.querySelector('.progress').style.display = 'none';
+                document.getElementById('extractBtn').disabled = false;
+            }
+        };
+
+        // 获取原始JSON数据
+        async function loadRawJson() {
+            try {
+                const response = await fetch('/api/get_raw_json');
+                const data = await response.json();
+                document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('加载原始数据失败:', error);
+            }
+        }
+
+        // 显示成功消息
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => alert.style.display = 'none', 3000);
+        }
+
+        // 显示错误消息
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => alert.style.display = 'none', 3000);
+        }
+    </script>
+</body>
+</html>

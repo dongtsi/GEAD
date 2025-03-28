@@ -1,0 +1,617 @@
+[
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward <= 0.00",
+      "Init_Win_bytes_forward <= 0.47",
+      " Flow Packets/s <= 0.65",
+      " Bwd Packet Length Mean <= 0.01"
+    ],
+    "value": 0.16336268790917144,
+    "samples": 1795
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward <= 0.00",
+      "Init_Win_bytes_forward <= 0.47",
+      " Flow Packets/s <= 0.65",
+      " Bwd Packet Length Mean > 0.01",
+      " Average Packet Size <= 0.05"
+    ],
+    "value": 0.1545732102423125,
+    "samples": 2670
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward <= 0.00",
+      "Init_Win_bytes_forward <= 0.47",
+      " Flow Packets/s <= 0.65",
+      " Bwd Packet Length Mean > 0.01",
+      " Average Packet Size > 0.05"
+    ],
+    "value": 0.15975075503190359,
+    "samples": 825
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward <= 0.00",
+      "Init_Win_bytes_forward <= 0.47",
+      " Flow Packets/s > 0.65"
+    ],
+    "value": 0.19489979073405267,
+    "samples": 80
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward <= 0.00",
+      "Init_Win_bytes_forward > 0.47"
+    ],
+    "value": 0.20271340323777137,
+    "samples": 158
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward > 0.00",
+      "Total Length of Fwd Packets <= 0.00",
+      " URG Flag Count <= 0.50",
+      "Init_Win_bytes_forward <= 0.08"
+    ],
+    "value": 0.18097288065379666,
+    "samples": 124
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward > 0.00",
+      "Total Length of Fwd Packets <= 0.00",
+      " URG Flag Count <= 0.50",
+      "Init_Win_bytes_forward > 0.08"
+    ],
+    "value": 0.21331931342338695,
+    "samples": 29
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward > 0.00",
+      "Total Length of Fwd Packets <= 0.00",
+      " URG Flag Count > 0.50"
+    ],
+    "value": 0.2035055081122113,
+    "samples": 137
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std <= 0.01",
+      " Init_Win_bytes_backward > 0.00",
+      "Total Length of Fwd Packets > 0.00"
+    ],
+    "value": 0.24922772816249303,
+    "samples": 21
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std > 0.01",
+      " Average Packet Size <= 0.01",
+      "Init_Win_bytes_forward <= 0.19"
+    ],
+    "value": 0.1651395805298336,
+    "samples": 63
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std > 0.01",
+      " Average Packet Size <= 0.01",
+      "Init_Win_bytes_forward > 0.19"
+    ],
+    "value": 0.20142273740334946,
+    "samples": 22
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std > 0.01",
+      " Average Packet Size > 0.01",
+      "Init_Win_bytes_forward <= 0.00"
+    ],
+    "value": 0.1810672613126891,
+    "samples": 28
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std > 0.01",
+      " Average Packet Size > 0.01",
+      "Init_Win_bytes_forward > 0.00",
+      " SYN Flag Count <= 0.50",
+      " Packet Length Mean <= 0.04"
+    ],
+    "value": 0.192036305864652,
+    "samples": 15
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std > 0.01",
+      " Average Packet Size > 0.01",
+      "Init_Win_bytes_forward > 0.00",
+      " SYN Flag Count <= 0.50",
+      " Packet Length Mean > 0.04"
+    ],
+    "value": 0.22667810898176663,
+    "samples": 191
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std > 0.01",
+      " Average Packet Size > 0.01",
+      "Init_Win_bytes_forward > 0.00",
+      " SYN Flag Count > 0.50",
+      " Flow Packets/s <= 0.58"
+    ],
+    "value": 0.2370125418553618,
+    "samples": 377
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total <= 0.00",
+      " Fwd Packet Length Std > 0.01",
+      " Average Packet Size > 0.01",
+      "Init_Win_bytes_forward > 0.00",
+      " SYN Flag Count > 0.50",
+      " Flow Packets/s > 0.58"
+    ],
+    "value": 0.25698112054117794,
+    "samples": 58
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length <= 0.00",
+      "Fwd IAT Total <= 0.39",
+      "Init_Win_bytes_forward <= 0.75"
+    ],
+    "value": 0.16579898821896522,
+    "samples": 145
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length <= 0.00",
+      "Fwd IAT Total <= 0.39",
+      "Init_Win_bytes_forward > 0.75"
+    ],
+    "value": 0.21137457688649494,
+    "samples": 15
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length <= 0.00",
+      "Fwd IAT Total > 0.39"
+    ],
+    "value": 0.2590878397226334,
+    "samples": 10
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward <= 0.00",
+      " Fwd IAT Max <= 0.12",
+      " Bwd IAT Max <= 0.05"
+    ],
+    "value": 0.1583491084000743,
+    "samples": 141
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward <= 0.00",
+      " Fwd IAT Max <= 0.12",
+      " Bwd IAT Max > 0.05"
+    ],
+    "value": 0.1775248233761106,
+    "samples": 70
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward <= 0.00",
+      " Fwd IAT Max > 0.12",
+      " Flow IAT Std <= 0.31"
+    ],
+    "value": 0.19777362713446983,
+    "samples": 130
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward <= 0.00",
+      " Fwd IAT Max > 0.12",
+      " Flow IAT Std > 0.31"
+    ],
+    "value": 0.21859863007610494,
+    "samples": 110
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean <= 0.01",
+      " Packet Length Std <= 0.35",
+      "Init_Win_bytes_forward <= 0.72",
+      " Packet Length Variance <= 0.04"
+    ],
+    "value": 0.22240168169925087,
+    "samples": 570
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean <= 0.01",
+      " Packet Length Std <= 0.35",
+      "Init_Win_bytes_forward <= 0.72",
+      " Packet Length Variance > 0.04"
+    ],
+    "value": 0.2295050635565707,
+    "samples": 769
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean <= 0.01",
+      " Packet Length Std <= 0.35",
+      "Init_Win_bytes_forward > 0.72"
+    ],
+    "value": 0.24728873508428437,
+    "samples": 153
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean <= 0.01",
+      " Packet Length Std > 0.35",
+      " Packet Length Variance <= 0.39"
+    ],
+    "value": 0.24836203616497846,
+    "samples": 232
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean <= 0.01",
+      " Packet Length Std > 0.35",
+      " Packet Length Variance > 0.39"
+    ],
+    "value": 0.31810312867164614,
+    "samples": 10
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length <= 0.00"
+    ],
+    "value": 0.17258793115615845,
+    "samples": 23
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length > 0.00",
+      " Bwd IAT Std <= 0.06",
+      " Down/Up Ratio <= 0.12",
+      " Flow Duration <= 0.04"
+    ],
+    "value": 0.1661917895078659,
+    "samples": 10
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length > 0.00",
+      " Bwd IAT Std <= 0.06",
+      " Down/Up Ratio <= 0.12",
+      " Flow Duration > 0.04"
+    ],
+    "value": 0.21753265158721072,
+    "samples": 1329
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length > 0.00",
+      " Bwd IAT Std <= 0.06",
+      " Down/Up Ratio > 0.12",
+      " PSH Flag Count <= 0.50"
+    ],
+    "value": 0.2539235715355192,
+    "samples": 35
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length > 0.00",
+      " Bwd IAT Std <= 0.06",
+      " Down/Up Ratio > 0.12",
+      " PSH Flag Count > 0.50",
+      " Packet Length Std <= 0.47"
+    ],
+    "value": 0.22264934538000802,
+    "samples": 299
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length > 0.00",
+      " Bwd IAT Std <= 0.06",
+      " Down/Up Ratio > 0.12",
+      " PSH Flag Count > 0.50",
+      " Packet Length Std > 0.47"
+    ],
+    "value": 0.26750713139772414,
+    "samples": 10
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length > 0.00",
+      " Bwd IAT Std > 0.06",
+      " Packet Length Std <= 0.33"
+    ],
+    "value": 0.21091918348806848,
+    "samples": 1298
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward <= 0.52",
+      " Fwd Header Length > 0.00",
+      " Bwd IAT Std > 0.06",
+      " Packet Length Std > 0.33"
+    ],
+    "value": 0.22500580383671653,
+    "samples": 72
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max <= 0.52",
+      " Init_Win_bytes_backward > 0.00",
+      " Fwd IAT Mean > 0.01",
+      " Init_Win_bytes_backward > 0.52"
+    ],
+    "value": 0.23660471991581075,
+    "samples": 136
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max > 0.52",
+      " Idle Max <= 0.74",
+      " Flow IAT Std <= 0.60"
+    ],
+    "value": 0.24495126502922332,
+    "samples": 251
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max > 0.52",
+      " Idle Max <= 0.74",
+      " Flow IAT Std > 0.60"
+    ],
+    "value": 0.2639234724144141,
+    "samples": 48
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count <= 0.50",
+      " Bwd Header Length > 0.00",
+      " Flow IAT Max > 0.52",
+      " Idle Max > 0.74"
+    ],
+    "value": 0.2993915816148122,
+    "samples": 15
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count > 0.50",
+      " Flow Duration <= 0.06",
+      "Init_Win_bytes_forward <= 0.28"
+    ],
+    "value": 0.2380525010855908,
+    "samples": 188
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count > 0.50",
+      " Flow Duration <= 0.06",
+      "Init_Win_bytes_forward > 0.28"
+    ],
+    "value": 0.2800161451101303,
+    "samples": 10
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean <= 0.42",
+      " SYN Flag Count > 0.50",
+      " Flow Duration > 0.06"
+    ],
+    "value": 0.3052612561059285,
+    "samples": 166
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean > 0.42",
+      " Flow IAT Mean <= 0.53",
+      " Flow IAT Mean <= 0.47"
+    ],
+    "value": 0.2808641357855363,
+    "samples": 33
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean > 0.42",
+      " Flow IAT Mean <= 0.53",
+      " Flow IAT Mean > 0.47"
+    ],
+    "value": 0.30698881494371516,
+    "samples": 57
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean > 0.42",
+      " Flow IAT Mean > 0.53",
+      " Flow IAT Mean <= 0.58"
+    ],
+    "value": 0.33008084162360146,
+    "samples": 42
+  },
+  {
+    "conditions": [
+      "Fwd IAT Total > 0.00",
+      " Flow IAT Mean > 0.42",
+      " Flow IAT Mean > 0.53",
+      " Flow IAT Mean > 0.58"
+    ],
+    "value": 0.3573864472133142,
+    "samples": 54
+  }
+]
