@@ -301,6 +301,7 @@
             })
             .then(res => res.json())
             .then(data => {
+                currentRules = data.rules;  // 保存接口返回的规则数据
                 const tbody = document.getElementById('ruleTableBody');
                 tbody.innerHTML = '';
                 
@@ -371,41 +372,41 @@
         }
     
         // 规则表格事件委托（初始化时绑定）
-        document.getElementById('ruleTableBody').addEventListener('click', async (e) => {
-            const target = e.target;
+        // document.getElementById('ruleTableBody').addEventListener('click', async (e) => {
+        //     const target = e.target;
             
-            if(target.classList.contains('edit-rule')) {
-                const index = parseInt(target.dataset.id);
-                const newCondition = prompt('请输入新的规则条件', currentRules[index].conditions.join(' 且 '));
-                if(newCondition) {
-                    await fetch('/api/update_rule', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            model_path: modelPath,
-                            rule_index: index,
-                            new_condition: newCondition.split(/且|and/).map(s => s.trim())
-                        })
-                    });
-                    loadRuleTable();
-                }
-            }
+        //     if(target.classList.contains('edit-rule')) {
+        //         const index = parseInt(target.dataset.id);
+        //         const newCondition = prompt('请输入新的规则条件', currentRules[index].conditions.join(' 且 '));
+        //         if(newCondition) {
+        //             await fetch('/api/update_rule', {
+        //                 method: 'POST',
+        //                 headers: {'Content-Type': 'application/json'},
+        //                 body: JSON.stringify({
+        //                     model_path: modelPath,
+        //                     rule_index: index,
+        //                     new_condition: newCondition.split(/且|and/).map(s => s.trim())
+        //                 })
+        //             });
+        //             loadRuleTable();
+        //         }
+        //     }
             
-            if(target.classList.contains('delete-rule')) {
-                if(confirm('确定要删除这条规则吗？')) {
-                    const index = parseInt(target.dataset.id);
-                    await fetch('/api/delete_rule', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            model_path: modelPath,
-                            rule_index: index
-                        })
-                    });
-                    loadRuleTable();
-                }
-            }
-        });
+        //     if(target.classList.contains('delete-rule')) {
+        //         if(confirm('确定要删除这条规则吗？')) {
+        //             const index = parseInt(target.dataset.id);
+        //             await fetch('/api/delete_rule', {
+        //                 method: 'POST',
+        //                 headers: {'Content-Type': 'application/json'},
+        //                 body: JSON.stringify({
+        //                     model_path: modelPath,
+        //                     rule_index: index
+        //                 })
+        //             });
+        //             loadRuleTable();
+        //         }
+        //     }
+        // });
 
         // 初始化其他事件处理
         document.addEventListener('click', async (e) => {
