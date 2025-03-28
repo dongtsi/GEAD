@@ -58,7 +58,7 @@
         <div class="card mb-4" id="modelCard" style="display: none;">
             <div class="card-header">第2步：网安异常模型规则提取</div>
             <div class="card-body">
-                <div id="trainResultSection">
+                <!-- <div id="trainResultSection">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <p><strong>ROC AUC:</strong> <span id="rocAuc"></span></p>
@@ -67,7 +67,7 @@
                             <p><strong>最佳阈值:</strong> <span id="threshold"></span></p>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
                 <div id="ruleExtractionSection">
                     <div class="mb-3" id="dataFileSection" style="display: none;">
@@ -101,9 +101,22 @@
 
                         <!-- 原始JSON数据显示 -->
                 <div class="card mb-4">
-                    <div class="card-header">原始规则数据</div>
+                    <!-- <div class="card-header">原始规则数据</div> -->
                     <div class="card-body" style="max-height: 400px; overflow-y: auto;">
-                        <pre id="rawJson" class="m-0 p-3 bg-light rounded" style="white-space: pre-wrap;"></pre>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>规则条件</th>
+                                        <th>样本数量</th>
+                                        <th>异常分数</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ruleTableBody">
+                                    <!-- 动态生成表格行 -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -302,7 +315,7 @@ data.rules.forEach((rule, index) => {
                     ruleViewer.src = `/api/view_rules/${modelPath.split('/').pop()}.png`;
                     document.getElementById('ruleImageContainer').style.display = 'block';
                     showSuccess('规则提取完成！');
-                    loadRawJson(); // 加载原始JSON数据
+                    loadRuleTable(); // 加载规则表格
                 } else {
                     showError(result.error || '规则提取失败');
                 }
@@ -314,15 +327,41 @@ data.rules.forEach((rule, index) => {
             }
         };
 
-        // 获取原始JSON数据
-        async function loadRawJson() {
-            try {
-                const response = await fetch(`/api/get_raw_json?model_path=${encodeURIComponent('models/Tuesday-WorkingHours.pcap_ISCX.csv.model')}`);
-                const data = await response.json();
-                document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
-            } catch (error) {
-                console.error('加载原始数据失败:', error);
-            }
+        // 加载规则表格
+        function loadRuleTable() {
+            fetch('/api/get_rules', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({model_path: modelPath})
+            })
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('ruleTableBody');
+                tbody.innerHTML = '';
+                
+                data.rules.forEach((rule, index) => {
+                    const tr = document.createElement('tr');
+                    
+                    // 规则条件列
+                    const conditionTd = document.createElement('td');
+                    conditionTd.textContent = Array.isArray(rule.conditions) 
+                        ? rule.conditions.join(' 且 ') 
+                        : rule.conditions;
+                    
+                    // 样本数量列
+                    const samplesTd = document.createElement('td');
+                    samplesTd.textContent = rule.samples;
+                    
+                    // 异常分数列
+                    const scoreTd = document.createElement('td');
+                    scoreTd.textContent = rule.value.toFixed(2);
+                    
+                    tr.appendChild(conditionTd);
+                    tr.appendChild(samplesTd);
+                    tr.appendChild(scoreTd);
+                    tbody.appendChild(tr);
+                });
+            });
         }
 
         // 显示成功消息
