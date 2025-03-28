@@ -6,12 +6,6 @@
 ![](https://img.shields.io/badge/language-python-blue.svg)
 ![](https://img.shields.io/badge/framework-pytorch-red.svg)
 
-> :warning: **Notice for AEC**
-> ```diff
-> - The files in this Github repository are incomplete (due to restrictions on large files);
-> - Please download the complete files from Zenodo
-> ```
-
 
 ## Introduction
 This artifact is the implementation and experiment results of GEAD proposed in CCS'24.
@@ -77,44 +71,3 @@ In short, **select the right kernel (namely, the above `GEAD`) and then execute 
 
 ## Demo
 We provide **[a step-by-step demo](demo/demo.ipynb)** of explaining an autoencoder-based anomaly detection model with GEAD, which is also the result in Section 4.3.1 of our paper.
-
-## Experiment Results (Avaiable on Zenodo)
-
-The output of the experiments will validate the following claims:
-- (Quality of GEAD) **Figure 3 on page 7** is reproduced in **[experiment/Fidelity_Evaluation.ipynb](.)** and the results are shown in:
-    - `experiment/results/figure3_part1(Positive Consistency).png`
-    - `experiment/results/figure3_part2(Negative Credibility).png`
-- (Quality of GEAD) **Table 1 on page 7** is reproduced in **[experiment/Fidelity_Evaluation.ipynb](.)** and the results are shown in:
-    - `experiment/results/Table1_part1(CICIDS2017).csv`
-    - `experiment/results/Table1_part2(Kitsune).csv`
-    - `experiment/results/Table1_part3(Kyoto2006)`
-    - `experiment/results/Table1_part4(HDFS).csv`
-- (Usage of GEAD) **The statement of the inverse relationship between AUC and the number of rules** (see Insight 5 on page 11 and section 4.3.2) is verified in **[experiment/Usage_2.ipynb](.)** and the reproduced cases of Figure 6 on page 9 are shown in:
-    - `experiment/results/figure6_case2_part1(loss-auc).png`
-    - `experiment/results/figure6_case2_part2(rule-auc).png`
-
-
-Our artifact does not validate the following claims/experiments:
-- Usage 3 in section 4.3.3 (also Section 5). These experiments were conducted with State Grid Corporation of China. Due to data compliance and privacy restrictions, we cannot leak any of data, even in a private or certified manner.
-
-- Other insights and experiments that require case-by-case analysis with various background knowledge (such as Usage 1 in Section 4.3.1). This part of the experiment does not have clear verifiable indicators but requires analysis based on specific circumstances (the analysis process has been introduced in the paper). At the same time, these contents are not our claims against GEAD, but are based on GEAD’s analysis of existing systems, so we leave it out of scope of artifact evaluation. 
-
-## Important Notes for AEC Review
-
-**To facilitate AEC review, we summarize the materials and instructions related to the three badges as follows:**
-
-### 1. Artifacts Available
-This artifacts will be put into Zenodo and public in Github. 
-
-### 2. Artifacts Evaluated
-We have include a demo to show how to use GEAD at **[here](demo/demo.ipynb)**, which could help you to understand how to use and the workflow of GEAD.
-In order to facilitate understanding of the GEAD code and verify its integrity, we briefly explain the relevant code in `code/gead.py` (the same applies to `gead_seq.py`) according to the GEAD process as introduced in "**Introduction**": 
-- **Root regression tree generation**: see `get_roottree()` function on line 112 of `code/gead.py`
-- **Low-confidence Region Identification**: also in `get_roottree()` function on line 112 of `code/gead.py`
-- **Low-confidence augmentation**: see `lc_data_augment()` function on line 140 of `code/gead.py`
-- **Low-confidence rule generation**: see `get_lc_trees()` function on line 386 of `code/gead.py`
-- **Tree merging and discretization**: see `get_merged_tree()` function on line 717 of `code/gead.py`
-- **Rule generation (optional)**: we leave this to specific applications since this step is optional (as stated in our paper)
-
-### 3. Results Reproduced
-Please see the above section in this README ("**Experiment Results**") and specific notes in the jupyter notebook files.
