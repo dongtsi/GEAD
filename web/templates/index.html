@@ -181,8 +181,19 @@ data.rules.forEach((rule, index) => {
         function handleImageLoad() {
             document.getElementById('ruleLoadingSpinner').style.display = 'none';
             document.getElementById('ruleViewer').style.display = 'block';
-            document.getElementById('optimizeCard').style.display = 'block'; // 新增这行显示第三步
-                    loadRuleTable(); // 加载规则表格
+            document.getElementById('optimizeCard').style.display = 'block';
+            loadRuleTable();
+            
+            // 新增JSON数据加载
+            fetch(`/api/get_raw_json?model_path=${encodeURIComponent(modelPath)}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('rawJson').textContent = 
+                        JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('JSON加载失败:', error);
+                });
         }
         
         // 图片加载失败处理
@@ -415,7 +426,7 @@ clone.removeAttribute('style');
         // 获取原始JSON数据
         async function loadRawJson() {
             try {
-                const response = await fetch('/api/get_raw_json');
+                const response = await fetch(`/api/get_raw_json?model_path=${encodeURIComponent('models/Tuesday-WorkingHours.pcap_ISCX.csv.model')}`);
                 const data = await response.json();
                 document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
             } catch (error) {
@@ -441,3 +452,11 @@ clone.removeAttribute('style');
     </script>
 </body>
 </html>
+
+        <!-- 原始JSON数据显示 -->
+        <div class="card mb-4">
+            <div class="card-header">原始规则数据</div>
+            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                <pre id="rawJson" class="m-0 p-3 bg-light rounded" style="white-space: pre-wrap;"></pre>
+            </div>
+        </div>

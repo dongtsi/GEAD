@@ -20,7 +20,7 @@ CORS(app)
 
 # 配置文件路径
 MODEL_SAVE_DIR = 'models'
-RULE_SAVE_DIR = 'rules'
+RULE_SAVE_DIR = os.path.join(os.path.dirname(__file__), 'rules')
 
 @app.route('/api/get_rules', methods=['POST'])
 def get_rules():
@@ -291,7 +291,15 @@ def view_rules(filename):
 @app.route('/api/get_raw_json')
 def get_raw_json():
     try:
-        with open('web/rules/Tuesday-WorkingHours.pcap_ISCX.csv.model.json') as f:
+        model_path = request.args.get('model_path')
+        if not model_path:
+            return jsonify(success=False, error="Missing model_path parameter"), 400
+        
+        rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+        if not os.path.exists(rule_json_path):
+            return jsonify(success=False, error="Rule file not found"), 404
+        
+        with open(rule_json_path) as f:
             return json.load(f)
     except Exception as e:
         return jsonify(success=False, error=str(e))
