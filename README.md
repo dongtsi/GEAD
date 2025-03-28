@@ -6,6 +6,8 @@
 ![](https://img.shields.io/badge/language-python-blue.svg)
 ![](https://img.shields.io/badge/framework-pytorch-red.svg)
 
+[<span style="color:blue">【中文说明（开源网安计划）】</span>](./README_CN.md)
+
 
 ## Introduction
 This artifact is the implementation and experiment results of GEAD proposed in CCS'24.
