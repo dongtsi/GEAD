@@ -304,6 +304,46 @@ def get_raw_json():
     except Exception as e:
         return jsonify(success=False, error=str(e))
 
+@app.route('/api/update_rule', methods=['POST'])
+def update_rule():
+    data = request.json
+    model_path = data['model_path']
+    rule_index = int(data['rule_index'])
+    new_condition = data['new_condition']
+    
+    rules = load_rules(model_path)
+    if 0 <= rule_index < len(rules):
+        rules[rule_index]['conditions'] = new_condition
+        save_rules(model_path, rules)
+        return jsonify({'status': 'success'})
+    return jsonify({'status': 'error', 'message': 'Invalid rule index'})
+
+@app.route('/api/delete_rule', methods=['POST'])
+def delete_rule():
+    data = request.json
+    model_path = data['model_path']
+    rule_index = int(data['rule_index'])
+    
+    rules = load_rules(model_path)
+    if 0 <= rule_index < len(rules):
+        del rules[rule_index]
+        save_rules(model_path, rules)
+        return jsonify({'status': 'success'})
+    return jsonify({'status': 'error', 'message': 'Invalid rule index'})
+
+def load_rules(model_path):
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    if not os.path.exists(rule_json_path):
+        return []
+    with open(rule_json_path, 'r') as f:
+        return json.load(f)
+
+
+def save_rules(model_path, rules):
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    with open(rule_json_path, 'w') as f:
+        json.dump(rules, f, indent=2)
+
 if __name__ == '__main__':
     import socket
     import argparse

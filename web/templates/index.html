@@ -110,6 +110,7 @@
                                         <th>规则条件</th>
                                         <th>样本数量</th>
                                         <th>异常分数</th>
+                                        <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ruleTableBody">
@@ -132,42 +133,6 @@
     <script>
         let modelPath = '';
 
-        // 加载规则表格
-        function loadRuleTable() {
-            fetch('/api/get_rules', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({model_path: modelPath})
-            })
-            .then(res => res.json())
-            .then(data => {
-                const tbody = document.getElementById('ruleTableBody');
-                tbody.innerHTML = '';
-                
-                currentRules = data.rules;
-data.rules.forEach((rule, index) => {
-                    const clone = document.getElementById('ruleTemplate').cloneNode(true);
-                    clone.id = '';
-                    clone.style.display = '';
-                    
-                    clone.querySelector('.rule-conditions').textContent = 
-                        Array.isArray(rule.conditions) ? rule.conditions.join(' 且 ') : rule.conditions;
-                    clone.querySelector('.rule-value').textContent = rule.value.toFixed(2);
-                    clone.querySelector('.rule-samples').textContent = rule.samples;
-                    
-                    // 编辑按钮点击事件
-                    clone.querySelector('.edit-rule').addEventListener('click', (e) => {
-    e.stopPropagation();
-                        const newCondition = prompt('请输入新的规则条件', Array.isArray(rule.conditions) ? rule.conditions.join(' 且 ') : rule.conditions);
-                        if(newCondition) {
-                            // 这里添加更新规则的后端调用
-                        }
-                    });
-                    
-                    tbody.appendChild(clone);
-                });
-            });
-        }
         let currentRules = [];
         
         // 图片加载成功处理
@@ -356,11 +321,46 @@ data.rules.forEach((rule, index) => {
                     const scoreTd = document.createElement('td');
                     scoreTd.textContent = rule.value.toFixed(2);
                     
+                    // 操作列
+                    const actionTd = document.createElement('td');
+                    actionTd.innerHTML = `
+                        <button class="btn btn-sm btn-warning edit-rule" data-id="${index}">编辑</button>
+                        <button class="btn btn-sm btn-danger delete-rule" data-id="${index}">删除</button>
+                    `;
+                    
                     tr.appendChild(conditionTd);
                     tr.appendChild(samplesTd);
                     tr.appendChild(scoreTd);
+                    tr.appendChild(actionTd);
                     tbody.appendChild(tr);
                 });
+
+                // 添加表格点击事件委托
+                document.getElementById('ruleTableBody').addEventListener('click', (e) => {
+                    const target = e.target;
+                    if (target.classList.contains('edit-rule')) {
+                        const index = parseInt(target.dataset.id);
+                        editRule(index);
+                    } else if (target.classList.contains('delete-rule')) {
+                        const index = parseInt(target.dataset.id);
+                        deleteRule(index);
+                    }
+                });
+
+                function editRule(index) {
+                    const newCondition = prompt('请输入新的规则条件（多个条件用逗号分隔）:', currentRules[index].conditions.join(','));
+                    if (newCondition) {
+                        currentRules[index].conditions = newCondition.split(',');
+                        loadRuleTable();
+                    }
+                }
+
+                function deleteRule(index) {
+                    if (confirm('确定要删除该规则吗？')) {
+                        currentRules.splice(index, 1);
+                        loadRuleTable();
+                    }
+                }
             });
         }
 
@@ -379,6 +379,41 @@ data.rules.forEach((rule, index) => {
             alert.style.display = 'block';
             setTimeout(() => alert.style.display = 'none', 3000);
         }
+    
+        // 规则编辑事件处理
+        document.addEventListener('click', async (e) => {
+            if(e.target.classList.contains('edit-rule')) {
+                const ruleIndex = e.target.dataset.id;
+                const newCondition = prompt('请输入新的规则条件', currentRules[ruleIndex].conditions.join(' 且 '));
+                if(newCondition) {
+                    await fetch('/api/update_rule', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            model_path: modelPath,
+                            rule_index: ruleIndex,
+                            new_condition: newCondition.split(/且|and/).map(s => s.trim())
+                        })
+                    });
+                    loadRuleTable();
+                }
+            }
+            
+            if(e.target.classList.contains('delete-rule')) {
+                if(confirm('确定要删除这条规则吗？')) {
+                    const ruleIndex = e.target.dataset.id;
+                    await fetch('/api/delete_rule', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            model_path: modelPath,
+                            rule_index: ruleIndex
+                        })
+                    });
+                    loadRuleTable();
+                }
+            }
+        });
     </script>
 </body>
 </html>
