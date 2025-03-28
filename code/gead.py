@@ -109,6 +109,24 @@ class GEADBase:
             print('Save fig at', save_name)
     
     ## generate the root regression tree
+    def get_rule_paths(self):
+        rules = []
+        tree_ = self.roottree.tree_
+        def recurse(node, rule):
+            if tree_.feature[node] != TREE_UNDEFINED:
+                name = self.feature_names[tree_.feature[node]]
+                threshold = tree_.threshold[node]
+                recurse(tree_.children_left[node], rule + [f"{name} <= {threshold:.2f}"])
+                recurse(tree_.children_right[node], rule + [f"{name} > {threshold:.2f}"])
+            else:
+                rules.append({
+                    "conditions": rule,
+                    "value": tree_.value[node][0][0].item(),
+                    "samples": tree_.n_node_samples[node].item()
+                })
+        recurse(0, [])
+        return rules
+
     def get_roottree(self, 
                         X_train:np.ndarray, # training feature of NN/DT (NOTE: all benign)
                         ):
