@@ -6,6 +6,6 @@ PyYAML==5.4.1
 scikit_learn==1.0.2
 scipy==1.7.3
 seaborn==0.11.2
-torch==1.13.1
+torch==2.4.0
 tqdm==4.66.1
 jupyter==1.0.0
