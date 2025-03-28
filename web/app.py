@@ -14,6 +14,7 @@ import AE
 import process_utils
 from gead import GEADUsage
 from process_utils import CicDataLoader
+from openai import OpenAI
 
 app = Flask(__name__)
 CORS(app)
@@ -330,6 +331,58 @@ def delete_rule():
         save_rules(model_path, rules)
         return jsonify({'status': 'success'})
     return jsonify({'status': 'error', 'message': 'Invalid rule index'})
+
+def load_rules(model_path):
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    if not os.path.exists(rule_json_path):
+        return []
+    with open(rule_json_path, 'r') as f:
+        return json.load(f)
+
+
+def save_rules(model_path, rules):
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    with open(rule_json_path, 'w') as f:
+        json.dump(rules, f, indent=2)
+
+@app.route('/api/llm_optimize', methods=['POST'])
+def llm_optimize():
+    try:
+        data = request.get_json()
+        model_path = data['model_path']
+        user_prompt = data['user_prompt']
+        current_rules = data['current_rules']
+        # print('current_rules', current_rules,'user_prompt',user_prompt)
+
+        client = OpenAI(
+            api_key="add your secret", 
+            base_url="https://api.moonshot.cn/v1",
+        )
+
+        completion = client.chat.completions.create(
+            model = "moonshot-v1-8k",
+            messages = [
+                {"role": "system", "content": "你是一个网络安全规则优化专家，请根据以下规则和用户指令提供优化建议："},
+                {"role": "user", "content": f"当前规则：{current_rules}\n优化指令：{user_prompt}"}
+            ],
+            temperature = 0.3,
+        )
+        
+        res = completion.choices[0].message.content
+
+        print('RES', res)
+
+        return jsonify({
+                'success': True,
+                'suggestion': res
+        })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'优化请求失败：{str(e)}'
+        })
+
 
 def load_rules(model_path):
     rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')

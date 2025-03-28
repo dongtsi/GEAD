@@ -93,10 +93,10 @@
             <div class="card-body">
                 <div class="btn-group w-100 mb-3" role="group">
                     <input type="radio" class="btn-check" name="optimizeType" id="manualOptimize" value="manual" checked>
-                    <label class="btn btn-outline-primary" for="manualOptimize">人工反馈</label>
+                    <label class="btn btn-outline-primary" for="manualOptimize">专家人工反馈</label>
                     
                     <input type="radio" class="btn-check" name="optimizeType" id="aiOptimize" value="ai">
-                    <label class="btn btn-outline-primary" for="aiOptimize">AI自动检测</label>
+                    <label class="btn btn-outline-primary" for="aiOptimize">LLM自动优化</label>
                 </div>
 
                         <!-- 原始JSON数据显示 -->
@@ -120,6 +120,27 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- AI优化参数输入 -->
+                <div id="aiOptimizeSection" style="display: none;">
+                    <div class="mb-3">
+                        <label for="promptInput" class="form-label">优化指令</label>
+                        <textarea class="form-control" id="promptInput" rows="3" 
+                            placeholder="例：请简化规则条件，同时保持异常检测准确率"></textarea>
+                    </div>
+                    <button class="btn btn-primary" id="startOptimizeBtn">开始优化</button>
+                    
+                    <div class="mt-3" id="optimizeResult" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">优化建议</div>
+                            <div class="card-body" id="suggestionContent"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 加载动画 -->
+                <div class="spinner-border text-primary" id="optimizeLoading" 
+                    style="display: none; margin: 1rem auto;"></div>
 
             </div>
         </div>
@@ -370,43 +391,6 @@
             alert.style.display = 'block';
             setTimeout(() => alert.style.display = 'none', 3000);
         }
-    
-        // 规则表格事件委托（初始化时绑定）
-        // document.getElementById('ruleTableBody').addEventListener('click', async (e) => {
-        //     const target = e.target;
-            
-        //     if(target.classList.contains('edit-rule')) {
-        //         const index = parseInt(target.dataset.id);
-        //         const newCondition = prompt('请输入新的规则条件', currentRules[index].conditions.join(' 且 '));
-        //         if(newCondition) {
-        //             await fetch('/api/update_rule', {
-        //                 method: 'POST',
-        //                 headers: {'Content-Type': 'application/json'},
-        //                 body: JSON.stringify({
-        //                     model_path: modelPath,
-        //                     rule_index: index,
-        //                     new_condition: newCondition.split(/且|and/).map(s => s.trim())
-        //                 })
-        //             });
-        //             loadRuleTable();
-        //         }
-        //     }
-            
-        //     if(target.classList.contains('delete-rule')) {
-        //         if(confirm('确定要删除这条规则吗？')) {
-        //             const index = parseInt(target.dataset.id);
-        //             await fetch('/api/delete_rule', {
-        //                 method: 'POST',
-        //                 headers: {'Content-Type': 'application/json'},
-        //                 body: JSON.stringify({
-        //                     model_path: modelPath,
-        //                     rule_index: index
-        //                 })
-        //             });
-        //             loadRuleTable();
-        //         }
-        //     }
-        // });
 
         // 初始化其他事件处理
         document.addEventListener('click', async (e) => {
@@ -442,7 +426,58 @@
                 }
             }
         });
+
+        // AI优化事件处理
+        document.querySelectorAll('input[name="optimizeType"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const isAI = e.target.value === 'ai';
+                document.getElementById('aiOptimizeSection').style.display = isAI ? 'block' : 'none';
+            });
+        });
+
+        // 启动AI优化
+        document.getElementById('startOptimizeBtn').onclick = async () => {
+            const prompt = document.getElementById('promptInput').value.trim();
+            if (!prompt) {
+                showError('请输入优化指令');
+                return;
+            }
+
+            const loading = document.getElementById('optimizeLoading');
+            const resultDiv = document.getElementById('optimizeResult');
+            loading.style.display = 'block';
+            resultDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/llm_optimize', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        model_path: modelPath,
+                        user_prompt: prompt,
+                        current_rules: currentRules
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    document.getElementById('suggestionContent').innerHTML = 
+                        result.suggestion.replace(/\n/g, '<br>');
+                    resultDiv.style.display = 'block';
+                    showSuccess('优化建议生成成功！');
+                } else {
+                    showError(result.error || '优化失败');
+                }
+            } catch (error) {
+                showError('请求失败：' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        };
     </script>
 </body>
 </html>
+
+
+        
 
