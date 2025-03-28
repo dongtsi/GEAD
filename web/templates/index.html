@@ -98,35 +98,15 @@
                     <input type="radio" class="btn-check" name="optimizeType" id="aiOptimize" value="ai">
                     <label class="btn btn-outline-primary" for="aiOptimize">AI自动检测</label>
                 </div>
-                
-                <div id="rulesList" class="mb-3">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th style="width:60%">规则条件</th>
-                                <th>异常值</th>
-                                <th>样本数</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ruleTableBody">
-                            <!-- 规则行模板 -->
-                            <tr style="display:none;" id="ruleTemplate">
-                                <td><span class="rule-conditions"></span></td>
-                                <td><span class="rule-value"></span></td>
-                                <td><span class="rule-samples"></span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary edit-rule">编辑</button>
-                                    <button class="btn btn-sm btn-outline-danger delete-rule">删除</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                        <!-- 原始JSON数据显示 -->
+                <div class="card mb-4">
+                    <div class="card-header">原始规则数据</div>
+                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        <pre id="rawJson" class="m-0 p-3 bg-light rounded" style="white-space: pre-wrap;"></pre>
+                    </div>
                 </div>
-                
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary" id="optimizeBtn">优化规则</button>
-                </div>
+
             </div>
         </div>
 
@@ -270,95 +250,6 @@ data.rules.forEach((rule, index) => {
             });
         });
 
-        // 规则提取完成后的处理
-        async function handleRuleExtraction(imagePath) {
-            document.getElementById('optimizeCard').style.display = 'block';
-            try {
-                const response = await fetch(`/api/rules?model_path=${encodeURIComponent(modelPath)}`);
-                const result = await response.json();
-                if (result.success) {
-                    currentRules = result.rules;
-                    displayRules(currentRules);
-                } else {
-                    showError('获取规则失败：' + result.error);
-                }
-            } catch (error) {
-                showError('获取规则失败：' + error.message);
-            }
-        }
-
-        // 显示规则列表
-        function displayRules(rules) {
-            const tbody = document.getElementById('ruleTableBody');
-            tbody.innerHTML = '';
-        
-            rules.forEach((rule, index) => {
-                const clone = document.getElementById('ruleTemplate').cloneNode(true);
-                clone.style.display = 'table-row';
-clone.removeAttribute('id');
-clone.removeAttribute('style');
-                
-                clone.querySelector('.rule-conditions').textContent = Array.isArray(rule.conditions) ? rule.conditions.join(' 且 ') : rule.conditions;
-                clone.querySelector('.rule-value').textContent = rule.value.toFixed(4);
-                clone.querySelector('.rule-samples').textContent = rule.samples;
-                
-                clone.querySelector('.edit-rule').onclick = () => editRule(index);
-                clone.querySelector('.delete-rule').onclick = () => deleteRule(index);
-                
-                tbody.appendChild(clone);
-            });
-        }
-
-        // 编辑规则
-        function editRule(index) {
-            const rule = currentRules[index];
-            const newRule = prompt('编辑规则', rule);
-            if (newRule !== null) {
-                currentRules[index] = newRule;
-                displayRules(currentRules);
-            }
-        }
-
-        // 删除规则
-        function deleteRule(index) {
-            if (confirm('确定要删除这条规则吗？')) {
-                currentRules.splice(index, 1);
-                displayRules(currentRules);
-            }
-        }
-
-        // 规则优化
-        document.getElementById('optimizeBtn').onclick = async () => {
-            const optimizeType = document.querySelector('input[name="optimizeType"]:checked').value;
-            try {
-                const response = await fetch('/api/optimize_rules', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        rules: currentRules,
-                        type: optimizeType
-                    })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    if (optimizeType === 'ai' && result.suggestions) {
-                        showSuccess('AI优化建议：\n' + result.suggestions.join('\n'));
-                        if (result.optimized_rules) {
-                            currentRules = result.optimized_rules;
-                            displayRules(currentRules);
-                        }
-                    } else {
-                        showSuccess(result.message || '规则已更新');
-                    }
-                } else {
-                    showError(result.error || '优化失败');
-                }
-            } catch (error) {
-                showError('优化请求失败：' + error.message);
-            }
-        };
 
         
         // 初始化时设置数据文件上传控件的显示状态
@@ -453,10 +344,3 @@ clone.removeAttribute('style');
 </body>
 </html>
 
-        <!-- 原始JSON数据显示 -->
-        <div class="card mb-4">
-            <div class="card-header">原始规则数据</div>
-            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
-                <pre id="rawJson" class="m-0 p-3 bg-light rounded" style="white-space: pre-wrap;"></pre>
-            </div>
-        </div>
