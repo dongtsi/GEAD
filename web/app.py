@@ -67,6 +67,7 @@ def get_logo():
 def get_rules():
     try:
         model_path = request.args.get('model_path')
+        model_path = secure_filename(model_path)
         if not model_path or not os.path.exists(model_path):
             return jsonify({'error': '模型文件不存在'}), 400
             
@@ -123,7 +124,7 @@ def upload_model():
             return jsonify({'error': '请上传模型文件'}), 400
             
         model_file = request.files['model_file']
-        model_path = os.path.join(MODEL_SAVE_DIR, model_file.filename)
+        model_path = os.path.join(MODEL_SAVE_DIR, secure_filename(model_file.filename))
         model_file.save(model_path)
         
         # 验证模型文件
@@ -212,13 +213,21 @@ def train_model():
 @app.route('/api/extract_rules', methods=['POST'])
 def extract_rules():
     try:
+        # # 加载配置和模型
+        # model_path = request.form.get('model_path')
+        # data_file = request.files.get('data_file')
+        # base_model_path = 'models'  # Use relative path for safety
+        # full_model_path = os.path.normpath(os.path.join(base_model_path, model_path))
+        # if not full_model_path.startswith(base_model_path) or not os.path.exists(full_model_path):
+        #     return jsonify({'error': '模型文件不存在或路径不安全'}), 400
+        # if not data_file:
+        #     return jsonify({'error': '请上传数据文件'}), 400
+
         # 加载配置和模型
-        model_path = request.form.get('model_path')
-        data_file = request.files.get('data_file')
-        base_model_path = 'models'  # Use relative path for safety
-        full_model_path = os.path.normpath(os.path.join(base_model_path, model_path))
-        if not full_model_path.startswith(base_model_path) or not os.path.exists(full_model_path):
-            return jsonify({'error': '模型文件不存在或路径不安全'}), 400
+        model_path = secure_filename(request.form.get('model_path'))
+        data_file = secure_filename(request.files.get('data_file'))
+        if not model_path or not os.path.exists(model_path):
+            return jsonify({'error': '模型文件不存在'}), 400
         if not data_file:
             return jsonify({'error': '请上传数据文件'}), 400
             
