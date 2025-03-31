@@ -443,6 +443,7 @@ if __name__ == '__main__':
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='GEAD Web Application')
     parser.add_argument('--port', type=int, default=5000, help='Port to run the server on')
+    parser.add_argument('--debug', action='store_true', help='Run the server in debug mode')
     args = parser.parse_args()
     
     # Try the specified port, or find an available one
@@ -464,4 +465,4 @@ if __name__ == '__main__':
                 sys.exit(1)
     
     print(f"Starting server on port {port}")
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=args.debug)
