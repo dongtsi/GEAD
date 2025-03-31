@@ -224,12 +224,15 @@ def extract_rules():
         #     return jsonify({'error': '请上传数据文件'}), 400
 
         # 加载配置和模型
-        model_path = secure_filename(request.form.get('model_path'))
+        model_path = request.form.get('model_path')
         data_file = request.files.get('data_file')
-        if not model_path or not os.path.exists(model_path):
+        base_model_path = MODEL_SAVE_DIR
+        full_model_path = os.path.normpath(os.path.join(base_model_path, secure_filename(os.path.basename(model_path))))
+        if not os.path.exists(full_model_path):
             return jsonify({'error': '模型文件不存在'}), 400
         if not data_file:
             return jsonify({'error': '请上传数据文件'}), 400
+        model_path = full_model_path
             
         with open(model_path, 'rb') as f:
             model = pickle.load(f)
