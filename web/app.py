@@ -152,7 +152,8 @@ def train_model():
             return jsonify({'error': '请上传数据文件'}), 400
         
         data_file = request.files['data_file']
-        data_path = os.path.join('uploads', data_file.filename)
+        filename = secure_filename(data_file.filename)
+        data_path = os.path.join('uploads', filename)
         os.makedirs('uploads', exist_ok=True)
         data_file.save(data_path)
 
@@ -227,7 +228,8 @@ def extract_rules():
             config = yaml.safe_load(f)
 
         # 保存并加载数据文件
-        data_path = os.path.join('uploads', data_file.filename)
+        filename = secure_filename(data_file.filename)
+        data_path = os.path.join('uploads', filename)
         os.makedirs('uploads', exist_ok=True)
         data_file.save(data_path)
 
