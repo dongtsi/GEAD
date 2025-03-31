@@ -55,7 +55,11 @@ python web/app.py --port 5000
 
 # 打开浏览器访问 http://localhost:5000
 ```
-**如需要使用LLM api（大模型驱动的规则优化），先需要配置`web/config.yml`中的`api_key`**
+**如需要使用LLM api（大模型驱动的规则优化），需要配置`web/llm_config.yml`文件：**
+
+- 支持多种LLM服务：Moonshot AI、OpenAI、Claude、文心一言等
+- 选择需要使用的LLM服务，将对应服务的`enabled`设为`true`
+- 配置对应服务的`api_key`和其他必要参数
 
 ## 主要功能截图
 
@@ -70,4 +74,4 @@ python web/app.py --port 5000
 ## 贡献
 欢迎贡献代码和想法。请在GitHub上提交问题或拉取请求。
 ## 许可证
-本项目使用MIT许可证。   
+本项目使用MIT许可证。
