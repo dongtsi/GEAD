@@ -1,0 +1,49 @@
+# LLM服务配置
+
+# Moonshot AI配置
+moonshot:
+  enabled: true
+  api_key: "your_api_key_here"
+  base_url: "https://api.moonshot.cn/v1"
+  models:
+    - name: "moonshot-v1-8k"
+      max_tokens: 8192
+      description: "Moonshot AI 8K上下文模型"
+
+# OpenAI配置
+openai:
+  enabled: false
+  api_key: "your_openai_api_key"
+  base_url: "https://api.openai.com/v1"
+  models:
+    - name: "gpt-4"
+      max_tokens: 8192
+      description: "OpenAI GPT-4模型"
+    - name: "gpt-3.5-turbo"
+      max_tokens: 4096
+      description: "OpenAI GPT-3.5 Turbo模型"
+
+# Claude配置
+anthropic:
+  enabled: false
+  api_key: "your_anthropic_api_key"
+  models:
+    - name: "claude-3-opus"
+      max_tokens: 200000
+      description: "Anthropic Claude 3 Opus模型"
+    - name: "claude-3-sonnet"
+      max_tokens: 200000
+      description: "Anthropic Claude 3 Sonnet模型"
+
+# 文心一言配置
+wendxin:
+  enabled: false
+  api_key: "your_wenxin_api_key"
+  secret_key: "your_wenxin_secret_key"
+  models:
+    - name: "ernie-bot-4"
+      max_tokens: 4096
+      description: "文心一言ERNIE-Bot 4.0模型"
+    - name: "ernie-bot"
+      max_tokens: 2048
+      description: "文心一言ERNIE-Bot模型"

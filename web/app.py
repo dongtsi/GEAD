@@ -14,8 +14,8 @@ import AE
 import process_utils
 from gead import GEADUsage
 from process_utils import CicDataLoader
-from openai import OpenAI
 from werkzeug.utils import secure_filename
+from llm_manager import LLMManager
 
 app = Flask(__name__)
 CORS(app)
@@ -398,25 +398,31 @@ def llm_optimize():
         current_rules = data['current_rules']
         # print('current_rules', current_rules,'user_prompt',user_prompt)
 
-        # 加载配置文件
-        with open('config.yml', 'r') as f:
-            config = yaml.safe_load(f)
+        # 初始化LLM管理器
+        llm_manager = LLMManager()
         
-        client = OpenAI(
-            api_key=config['moonshot']['api_key'],
-            base_url="https://api.moonshot.cn/v1",
-        )
-
-        completion = client.chat.completions.create(
-            model = "moonshot-v1-8k",
-            messages = [
-                {"role": "system", "content": "你是一个网络安全规则优化专家，请根据以下规则和用户指令提供优化建议："},
-                {"role": "user", "content": f"当前规则：{current_rules}\n优化指令：{user_prompt}"}
-            ],
-            temperature = 0.3,
-        )
+        # 构建消息
+        messages = [
+            {"role": "system", "content": "你是一个网络安全规则优化专家，请根据以下规则和用户指令提供优化建议："},
+            {"role": "user", "content": f"当前规则：{current_rules}\n优化指令：{user_prompt}"}
+        ]
         
-        res = completion.choices[0].message.content
+        # 获取可用模型
+        available_models = llm_manager.get_available_models()
+        if not available_models:
+            return jsonify({
+                'success': False,
+                'error': '没有可用的LLM服务，请检查配置文件'
+            })
+        
+        # 使用第一个可用的模型
+        model = available_models[0]
+        res = llm_manager.chat_completion(
+            service=model['service'],
+            model=model['name'],
+            messages=messages,
+            temperature=0.3
+        )
 
         print('RES', res)
 

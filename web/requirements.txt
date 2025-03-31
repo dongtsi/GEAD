@@ -9,3 +9,5 @@ graphviz==0.20.1
 PyYAML==5.4.1
 tqdm==4.66.1
 openai==1.39.0
+anthropic==0.18.1
+requests==2.31.0
