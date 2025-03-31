@@ -296,7 +296,11 @@ def get_raw_json():
         if not model_path:
             return jsonify(success=False, error="Missing model_path parameter"), 400
         
-        rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+        normalized_model_path = os.path.normpath(model_path)
+        if not normalized_model_path.startswith(RULE_SAVE_DIR):
+            return jsonify(success=False, error="Invalid model_path parameter"), 400
+        
+        rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(normalized_model_path)}.json')
         if not os.path.exists(rule_json_path):
             return jsonify(success=False, error="Rule file not found"), 404
         
@@ -389,7 +393,11 @@ def llm_optimize():
 
 
 def load_rules(model_path):
-    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    normalized_model_path = os.path.normpath(model_path)
+    if not normalized_model_path.startswith(RULE_SAVE_DIR):
+        raise Exception("Invalid model_path parameter")
+    
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(normalized_model_path)}.json')
     if not os.path.exists(rule_json_path):
         return []
     with open(rule_json_path, 'r') as f:
@@ -397,7 +405,11 @@ def load_rules(model_path):
 
 
 def save_rules(model_path, rules):
-    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    normalized_model_path = os.path.normpath(model_path)
+    if not normalized_model_path.startswith(RULE_SAVE_DIR):
+        raise Exception("Invalid model_path parameter")
+    
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(normalized_model_path)}.json')
     with open(rule_json_path, 'w') as f:
         json.dump(rules, f, indent=2)
 
