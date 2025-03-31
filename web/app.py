@@ -196,7 +196,7 @@ def train_model():
         )
         
         # 保存模型
-        model_path = os.path.join(MODEL_SAVE_DIR, f'{data_file.filename}.model')
+        model_path = os.path.join(MODEL_SAVE_DIR, f'{secure_filename(data_file.filename)}.model')
         with open(model_path, 'wb') as f:
             pickle.dump(model, f)
         
