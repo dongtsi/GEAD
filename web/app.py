@@ -316,10 +316,18 @@ def update_rule():
     rule_index = int(data['rule_index'])
     new_condition = data['new_condition']
     
-    rules = load_rules(model_path)
-    if 0 <= rule_index < len(rules):
-        rules[rule_index]['conditions'] = new_condition
-        save_rules(model_path, rules)
+    try:
+        model_path = os.path.normpath(model_path)
+        if not model_path.startswith(RULE_SAVE_DIR):
+            raise ValueError("Invalid model path")
+        rules = load_rules(model_path)
+        if 0 <= rule_index < len(rules):
+            rules[rule_index]['conditions'] = new_condition
+            save_rules(model_path, rules)
+            return jsonify({'status': 'success'})
+        return jsonify({'status': 'error', 'message': 'Invalid rule index'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
         return jsonify({'status': 'success'})
     return jsonify({'status': 'error', 'message': 'Invalid rule index'})
 
@@ -329,11 +337,18 @@ def delete_rule():
     model_path = data['model_path']
     rule_index = int(data['rule_index'])
     
-    rules = load_rules(model_path)
-    if 0 <= rule_index < len(rules):
-        del rules[rule_index]
-        save_rules(model_path, rules)
-        return jsonify({'status': 'success'})
+    try:
+        model_path = os.path.normpath(model_path)
+        if not model_path.startswith(RULE_SAVE_DIR):
+            raise ValueError("Invalid model path")
+        rules = load_rules(model_path)
+        if 0 <= rule_index < len(rules):
+            del rules[rule_index]
+            save_rules(model_path, rules)
+            return jsonify({'status': 'success'})
+        return jsonify({'status': 'error', 'message': 'Invalid rule index'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
     return jsonify({'status': 'error', 'message': 'Invalid rule index'})
 
 def load_rules(model_path):
@@ -345,6 +360,9 @@ def load_rules(model_path):
 
 
 def save_rules(model_path, rules):
+    model_path = os.path.normpath(model_path)
+    if not model_path.startswith(RULE_SAVE_DIR):
+        raise ValueError("Invalid model path")
     rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
     with open(rule_json_path, 'w') as f:
         json.dump(rules, f, indent=2)
