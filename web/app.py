@@ -284,7 +284,10 @@ def extract_rules():
 @app.route('/api/view_rules/<path:filename>')
 def view_rules(filename):
     try:
-        rule_path = os.path.join(RULE_SAVE_DIR, filename)
+        normalized_filename = os.path.normpath(filename)
+        rule_path = os.path.join(RULE_SAVE_DIR, normalized_filename)
+        if not rule_path.startswith(RULE_SAVE_DIR):
+            raise ValueError("Invalid file path")
         return send_file(rule_path, mimetype='image/png')
     except Exception as e:
         return jsonify({'error': str(e)}), 500
