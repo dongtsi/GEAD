@@ -2,7 +2,7 @@ import os
 import yaml
 from typing import Dict, List, Optional
 from openai import OpenAI
-from anthropic import Anthropic
+# from anthropic import Anthropic
 import requests
 
 class LLMManager:
@@ -35,10 +35,10 @@ class LLMManager:
             )
         
         # 初始化Claude客户端
-        if self.config['anthropic']['enabled']:
-            self.clients['anthropic'] = Anthropic(
-                api_key=self.config['anthropic']['api_key']
-            )
+        # if self.config['anthropic']['enabled']:
+            # self.clients['anthropic'] = Anthropic(
+                # api_key=self.config['anthropic']['api_key']
+            # )
         
         # 初始化文心一言客户端
         if self.config['wendxin']['enabled']:
