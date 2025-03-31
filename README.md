@@ -7,7 +7,7 @@
 ![](https://img.shields.io/badge/language-python-blue.svg)
 ![](https://img.shields.io/badge/framework-pytorch-red.svg)
 
-### [<span style="color:blue">【中文README（开源网安计划）请点击此处】</span>](./README_CN.md)
+### [<span style="color:blue">【🔗中文README（开源网安计划）请点击此处🔗】</span>](./README_CN.md)
 
 
 ## Introduction
