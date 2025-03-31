@@ -215,8 +215,10 @@ def extract_rules():
         # 加载配置和模型
         model_path = request.form.get('model_path')
         data_file = request.files.get('data_file')
-        if not model_path or not os.path.exists(model_path):
-            return jsonify({'error': '模型文件不存在'}), 400
+        base_model_path = '/path/to/safe/models'  # Define the safe base directory
+        full_model_path = os.path.normpath(os.path.join(base_model_path, model_path))
+        if not full_model_path.startswith(base_model_path) or not os.path.exists(full_model_path):
+            return jsonify({'error': '模型文件不存在或路径不安全'}), 400
         if not data_file:
             return jsonify({'error': '请上传数据文件'}), 400
             
