@@ -225,7 +225,7 @@ def extract_rules():
 
         # 加载配置和模型
         model_path = secure_filename(request.form.get('model_path'))
-        data_file = secure_filename(request.files.get('data_file'))
+        data_file = request.files.get('data_file')
         if not model_path or not os.path.exists(model_path):
             return jsonify({'error': '模型文件不存在'}), 400
         if not data_file:
@@ -243,6 +243,7 @@ def extract_rules():
         data_path = os.path.join('uploads', filename)
         os.makedirs('uploads', exist_ok=True)
         data_file.save(data_path)
+        data_path = os.path.normpath(data_path)
 
         print('loading feature_names')
         dl = CicDataLoader(improved=False)
