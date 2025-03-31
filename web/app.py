@@ -15,6 +15,7 @@ import process_utils
 from gead import GEADUsage
 from process_utils import CicDataLoader
 from openai import OpenAI
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app)
@@ -26,7 +27,7 @@ RULE_SAVE_DIR = os.path.join(os.path.dirname(__file__), 'rules')
 @app.route('/api/get_rules', methods=['POST'])
 def get_rules():
     model_path = request.json.get('model_path')
-    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}.json')
     
     if not os.path.exists(rule_json_path):
         return jsonify({'error': '规则文件不存在'}), 404
@@ -262,13 +263,14 @@ def extract_rules():
         tp = TreePlotter(gead_usage.merged_tree, feature_names=feature_names)
         graph = tp.plot_reg_tree(gead_usage.ad_thres, branch_condition=True, normalizer=normalizer)
         
+        
         # 保存为临时文件并返回路径
-        rule_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}')
+        rule_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}')
         graph.render(rule_path, format='png', cleanup=True)
         
         # 保存规则到JSON文件
-        rules = gead_usage.get_rule_paths()
-        rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+        rules = gead_usage.get_rule_paths() 
+        rule_json_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}.json')
         with open(rule_json_path, 'w') as f:
             json.dump(rules, f, indent=2)
         
@@ -296,7 +298,7 @@ def get_raw_json():
         if not model_path:
             return jsonify(success=False, error="Missing model_path parameter"), 400
         
-        rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+        rule_json_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}.json')
         if not os.path.exists(rule_json_path):
             return jsonify(success=False, error="Rule file not found"), 404
         
@@ -333,7 +335,7 @@ def delete_rule():
     return jsonify({'status': 'error', 'message': 'Invalid rule index'})
 
 def load_rules(model_path):
-    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}.json')
     if not os.path.exists(rule_json_path):
         return []
     with open(rule_json_path, 'r') as f:
@@ -341,7 +343,7 @@ def load_rules(model_path):
 
 
 def save_rules(model_path, rules):
-    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}.json')
     with open(rule_json_path, 'w') as f:
         json.dump(rules, f, indent=2)
 
@@ -389,7 +391,7 @@ def llm_optimize():
 
 
 def load_rules(model_path):
-    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}.json')
     if not os.path.exists(rule_json_path):
         return []
     with open(rule_json_path, 'r') as f:
@@ -397,7 +399,7 @@ def load_rules(model_path):
 
 
 def save_rules(model_path, rules):
-    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{os.path.basename(model_path)}.json')
+    rule_json_path = os.path.join(RULE_SAVE_DIR, f'{secure_filename(os.path.basename(model_path))}.json')
     with open(rule_json_path, 'w') as f:
         json.dump(rules, f, indent=2)
 
