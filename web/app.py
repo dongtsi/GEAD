@@ -354,8 +354,12 @@ def llm_optimize():
         current_rules = data['current_rules']
         # print('current_rules', current_rules,'user_prompt',user_prompt)
 
+        # 加载配置文件
+        with open('config.yml', 'r') as f:
+            config = yaml.safe_load(f)
+        
         client = OpenAI(
-            api_key="add your secret", 
+            api_key=config['moonshot']['api_key'],
             base_url="https://api.moonshot.cn/v1",
         )
 
