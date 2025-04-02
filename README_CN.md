@@ -6,7 +6,7 @@
 
 > 本项目相关的论文成果已被 [ACM CCS'24](https://www.sigsac.org/ccs/CCS2024) 接收并获得[Distinguished Artifact Award](https://www.sigsac.org/ccs/CCS2024/program/awards.html)。
 
-[English (CCS'24)](./README.md)
+## [<span style="color:blue">【🔗English README (CCS'24)🔗】</span>](./README.md)
 
 # 开源网安计划 — GEAD
 ## 项目简介
