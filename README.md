@@ -1,7 +1,7 @@
 <div align=center><img src="doc/gead_logo.png" width="80%"></div>
 
 > *Rules Refine the Riddle: Global Explanation for Deep Learning-Based Anomaly Detection in Security Applications.* Accepted by [CCS'24](https://www.sigsac.org/ccs/CCS2024).
-**Please download the released code from [here](https://github.com/dongtsi/GEAD/releases/tag/AEC) if you want to reproduce the results in our paper. **
+**Please download the released code from [here](https://github.com/dongtsi/GEAD/releases/tag/AEC) if you want to reproduce the results in our paper.**
 [<span style="color:blue">【中文README】</span>](./README_CN.md)
 
 ![](https://img.shields.io/badge/license-MIT-green.svg)
